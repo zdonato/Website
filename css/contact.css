@@ -1,0 +1,60 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+/* This selector NEEDS to be html, not body or * */
+html {
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+    color: white;
+    text-align: center;   
+}
+
+ul {
+    list-style-type: none;
+}
+
+header > nav {
+    display: block;
+    width: 100%;
+    background-color: lightgray;
+}
+
+header > nav > ul {
+    display: table-row;
+    list-style: none;
+    padding-right: 2%;
+    margin: 0 auto;
+}
+
+header > nav > ul > li {
+    display: table-cell;
+    padding: 10px 20px;
+    vertical-align: middle;
+}
+
+.superscript {
+    font-size: 0.9rem;
+    vertical-align: top;
+}
+
+a:link, a:visited, a:active {
+    color: white;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline; 
+}
+
+form-section {
+    height: 30em;
+    background-color: #00A0B1;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    margin-bottom: 10em;
+}
+
+footer {
+    color: black;   
+}
