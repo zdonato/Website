@@ -47,12 +47,34 @@ a:hover {
     text-decoration: underline; 
 }
 
-form-section {
-    height: 30em;
+#form-section {
+    height: 37em;
     background-color: #00A0B1;
     padding-left: 0.5em;
     padding-right: 0.5em;
-    margin-bottom: 10em;
+    padding-top: 2em;
+}
+
+#fname, #lname, #email {
+    width: 305px;
+    height: 30px;
+    font-size: 16px;
+}
+
+#message {
+    font-size: 16px;
+}
+
+#join_label {
+    font-size: 16px;
+    position: relative;
+    top: 2px;
+}
+
+#form_but {
+    width: 80px;
+    height: 30px; 
+    font-size: 16px;
 }
 
 footer {
