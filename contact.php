@@ -8,8 +8,8 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST['email'])) { 
 
-            $to = "zacharyadonato@gmail.com";  
-            $cc = "zdstar95@yahoo.com"; 
+            $to = "zdonato@stevens.edu";  
+            $cc = ""; 
             $reg_ex_email = '/^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/';
             $reg_ex_str = "/^[A-Za-z .'-]+$/"; 
             $headers = ""; 
@@ -28,34 +28,42 @@
             $lname = fix_input($_POST['lastname']);
             $email_from = fix_input($_POST['email']);
             $comments = fix_input($_POST['message']); 
-
+            $join_email = $_POST['join_list'];
 
             // Ensure required data exists. 
             if (!isset($_POST['fname']) || !preg_match($reg_ex_str, $fname)) {
-                header("LOCATION:submit.php?success=3");
+                header("Location: submit.php?success=3");
             }
 
             if (!isset($_POST['lname']) || !preg_match($reg_ex_str, $lname)) {
-                header("LOCATION:submit.php?success=4");
+                header("Location: submit.php?success=4");
             }
 
             if (!isset($_POST['email']) || !preg_match($reg_ex_email, $email_from)) {
-                header("LOCATION:submit.php?success=5");
+                header("Location: submit.php?success=5");
             }
 
             if (!isset($_POST['message']) || strlen($comments) < 2 ) {
-                header("LOCATION:submit.php?success=6"); 
+                header("Location: submit.php?success=6"); 
             }
 
             $subj = "Message from " . $fname . " " . $lname; 
-            $message .= "First Name: " . $fname . "\nLast Name: " . $lname . "\nEmail: " . $email_from . "\n\nMessage: " . $comments . "\n"; 
+            $message .= "First Name: " . $fname . "\nLast Name: " . $lname . "\nEmail: " . $email_from . "\n"; 
+            echo $join_email;
+            if ($join_email == 'yes'){
+                $message .= "Join email list: YES\n";
+            } else {
+                $message .= "Join email list: NO\n"; 
+            }
+            $message .= "\nMessage: " . $comments . "\n\n";
             $headers .= "From: SCSC-Contact@stevens.edu\r\n"; 
 
             //Send the email. 
-            if (mail($to, $subj, $message, $headers) && mail($cc, $subj, $message, $headers) ){
-                header("LOCATION:submit.php?success=1");
+            //&& mail($cc, $subj, $message, $headers
+            if (mail($to, $subj, $message, $headers) ){
+                header("Location: submit.php?success=1");
             } else {
-                header("LOCATION:submit.php?success=0");
+                header("Location: submit.php?success=0");
             }
         } // End isset email. 
     } // End server request check. 
@@ -81,15 +89,16 @@
                 </ul>
             </nav>
         </header>
-        <section id="form-section"> 
+        <section id="form-section">
+            <h1> Have a question? Want to join the email list? Contact us below!</h1> <br>
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
                 <input type="text" name="firstname" id="fname" placeholder="First Name" required autofocus width="32"/> <br> <br> 
                 <input type="text" name="lastname" id="lname" placeholder="Last Name" required width="32"/> <br> <br> 
                 <input type="email" name="email" id="email" required width="64" placeholder="Primary Email"/> <br> <br>
                 <textarea type="text" name="message" id="message" cols="41" rows="15" maxlength="2000"  required placeholder="Message"></textarea> <br> <br> 
-                <p id="rem"> Remaining:</p>
-                <p id="charCount"> 2000 </p>
-                <button type="submit" value="submit" class="btn btn-primary" id="formBut"> Send </button>
+                <label for="join_list" id="join_label" value="yes"> Join E-Mail List</label>
+                <input type="radio" id="join_list"></input><br><br>
+                <button type="submit" value="submit" class="btn btn-primary" id="form_but"> Send </button>
             </form>
         </section>
         <footer>
