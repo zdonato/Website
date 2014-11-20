@@ -32,19 +32,19 @@
 
             // Ensure required data exists. 
             if (!isset($_POST['fname']) || !preg_match($reg_ex_str, $fname)) {
-                header("LOCATION:submittesting.php?success=3");
+                header("LOCATION:submit.php?success=3");
             }
 
             if (!isset($_POST['lname']) || !preg_match($reg_ex_str, $lname)) {
-                header("LOCATION:submittesting.php?success=4");
+                header("LOCATION:submit.php?success=4");
             }
 
             if (!isset($_POST['email']) || !preg_match($reg_ex_email, $email_from)) {
-                header("LOCATION:submittesting.php?success=5");
+                header("LOCATION:submit.php?success=5");
             }
 
             if (!isset($_POST['message']) || strlen($comments) < 2 ) {
-                header("LOCATION:submittesting.php?success=6"); 
+                header("LOCATION:submit.php?success=6"); 
             }
 
             $subj = "Message from " . $fname . " " . $lname; 
@@ -53,9 +53,9 @@
 
             //Send the email. 
             if (mail($to, $subj, $message, $headers) && mail($cc, $subj, $message, $headers) ){
-                header("LOCATION:submittesting.php?success=1");
+                header("LOCATION:submit.php?success=1");
             } else {
-                header("LOCATION:submittesting.php?success=0");
+                header("LOCATION:submit.php?success=0");
             }
         } // End isset email. 
     } // End server request check. 
