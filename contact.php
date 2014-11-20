@@ -2,71 +2,63 @@
 	TODO List:
     - CSS for page
     - PHP script for mailing
-    - Find out how to set sender
-    - Form validation
-    - Set a success variable upon success or not (Structure based on what was wrong)
     - if (@mail....) for checking if sent
 -->
 <?php
-    if (isset($_POST['email'])) { 
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (isset($_POST['email'])) { 
 
-        $to = "jgardell@stevens.edu";  
-        $cc = "pgrasso@stevens.edu"; 
-        $reg_ex_email = '/^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/';
-        $reg_ex_str = "/^[A-Za-z .'-]+$/";
-        $error = ""; 
-        $headers = ""; 
-        $message = ""; 
+            $to = "zacharyadonato@gmail.com";  
+            $cc = "zdstar95@yahoo.com"; 
+            $reg_ex_email = '/^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/';
+            $reg_ex_str = "/^[A-Za-z .'-]+$/"; 
+            $headers = ""; 
+            $message = ""; 
 
-        // Fields of the form.
-        $fname = $_POST['firstname'];
-        $lname = $_POST['lastname'];
-        $email_from = $_POST['email'];
-        $comments = $_POST['message']; 
+            // Fix the data for security. 
+            function fix_input($inp){
+                $inp = trim($inp);
+                $inp = stripslashes($inp);
+                $inp = htmlspecialchars($inp);
+                return $inp; 
+            }
+            
+            // Fields of the form.
+            $fname = fix_input($_POST['firstname']);
+            $lname = fix_input($_POST['lastname']);
+            $email_from = fix_input($_POST['email']);
+            $comments = fix_input($_POST['message']); 
 
-        function err($error) {
-            echo "<p> There were error(s) with the form you have submitted. </p> <br>";
-            echo "<p> The errors are as follows: </p> <br> <br> "; 
-            echo $error . "<br> <br> "; 
-            echo "<p> Please correct the error(s) and resubmit the form. <p>"; 
-            echo "<a href='contact.php'> Click to return to form </a>"; 
-            die(); 
-        }
 
-        // Ensure required data exists. 
-        if (!isset($_POST['firstname']) || !preg_match($reg_ex_str, $fname)) {
-            $error .= "<p> The first name you entered is not valid. </p> <br> ";
-        }
+            // Ensure required data exists. 
+            if (!isset($_POST['fname']) || !preg_match($reg_ex_str, $fname)) {
+                header("LOCATION:submittesting.php?success=3");
+            }
 
-        if (!isset($_POST['lastname']) || !preg_match($reg_ex_str, $lname)) {
-            $error .= "<p> The last name you entered is not valid. </p>  <br> "; 
-        }
+            if (!isset($_POST['lname']) || !preg_match($reg_ex_str, $lname)) {
+                header("LOCATION:submittesting.php?success=4");
+            }
 
-        if (!isset($_POST['email']) || !preg_match($reg_ex_email, $email_from)) {
-            $error .= "<p> The email you entered is not valid. </p> <br> "; 
-        }
+            if (!isset($_POST['email']) || !preg_match($reg_ex_email, $email_from)) {
+                header("LOCATION:submittesting.php?success=5");
+            }
 
-        if (!isset($_POST['message']) || strlen($comments) < 2 ) {
-            $error .= "<p> The message you entered is not valid. <br> </p>"; 
-        }
+            if (!isset($_POST['message']) || strlen($comments) < 2 ) {
+                header("LOCATION:submittesting.php?success=6"); 
+            }
 
-        // Call the error function if there was errors. 
-        if (strlen($error) > 0) {
-            err($error); 
-        } else {
             $subj = "Message from " . $fname . " " . $lname; 
             $message .= "First Name: " . $fname . "\nLast Name: " . $lname . "\nEmail: " . $email_from . "\n\nMessage: " . $comments . "\n"; 
-            $headers .= "From: " . $email_from . "\r\n"; 
+            $headers .= "From: SCSC-Contact@stevens.edu\r\n"; 
 
-            // Send the email. 
-            mail($to, $subj, $message, $headers); 
-            mail($cc, $subj, $message, $headers); 
-
-            echo "<p>" . $fname . ", thank you for contacting us. You will receive an email from us shortly.</p> <br>"; 
-            echo "<p> Click the link below to return to our homepage. </p> <br>"; 
-            echo "<a href='home.html'> Home </a>"; 
-        }
-    } // End isset email. 
+            //Send the email. 
+            if (mail($to, $subj, $message, $headers) && mail($cc, $subj, $message, $headers) ){
+                header("LOCATION:submittesting.php?success=1");
+            } else {
+                header("LOCATION:submittesting.php?success=0");
+            }
+        } // End isset email. 
+    } // End server request check. 
 ?> 
 <html lang="en-US">
     <head>
